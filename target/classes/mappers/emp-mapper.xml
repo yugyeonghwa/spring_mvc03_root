@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="emp">
+	<select id="emp_list" resultType="evo">
+		select * from employees where emp_no &gt;= 10001 and emp_no &lt;= 10020 order by emp_no
+	</select>
+	
+	<select id="emp_search_list" resultType="evo" parameterType="Map">
+		select * from employees where 
+		<choose>
+			<when test="searchType == 1"> Lower(emp_no) = Lower(#{searchValue})</when>
+			<when test="searchType == 2"> Lower(first_name) like concat('%', Lower(#{searchValue}), '%')</when>
+			<when test="searchType == 3"> Lower(gender) = Lower(#{searchValue})</when>
+			<when test="searchType == 4"> Lower(birth_date) like concat(Lower(#{searchValue}), '%')</when>
+		</choose>
+		limit 20
+	</select>
+</mapper>
+
